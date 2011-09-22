@@ -23,6 +23,13 @@ extern NSString * const MPOAuthAccessTokenURLKey;
 
 - (id)initWithAPI:(MPOAuthAPI *)inAPI forURL:(NSURL *)inURL;
 - (id)initWithAPI:(MPOAuthAPI *)inAPI forURL:(NSURL *)inURL withConfiguration:(NSDictionary *)inConfig;
+
+// Juguang
+// This init does not need the config to tell what the 3 urls are. instead, they will be set later *manually*
+- (id) initWithAPI:(MPOAuthAPI *)inAPI ;
+
+
+
 - (void)authenticate;
 
 - (void)setTokenRefreshInterval:(NSTimeInterval)inTimeInterval;

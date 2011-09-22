@@ -290,3 +290,12 @@ extern NSString * const MPOAuthCredentialSessionHandleKey;
 }
 
 @end
+
+@implementation MPOAuthCredentialConcreteStore (Juguang)
+
+- (id)initWithCredentials:(NSDictionary *)inCredentials {
+    self = [self initWithCredentials: inCredentials forBaseURL: nil];
+    return self;
+}
+
+@end

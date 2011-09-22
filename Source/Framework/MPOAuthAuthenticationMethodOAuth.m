@@ -39,6 +39,8 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 - (void)_authenticationRequestForUserPermissionsConfirmationAtURL:(NSURL *)inURL;
 - (void)_authenticationRequestForAccessToken;
 
+// Juguang
+- (void) registerObservers;
 @end
 
 @implementation MPOAuthAuthenticationMethodOAuth
@@ -50,12 +52,28 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 		self.oauthRequestTokenURL = [NSURL URLWithString:[inConfig objectForKey:MPOAuthRequestTokenURLKey]];
 		self.oauthAuthorizeTokenURL = [NSURL URLWithString:[inConfig objectForKey:MPOAuthUserAuthorizationURLKey]];
 		self.oauthGetAccessTokenURL = [NSURL URLWithString:[inConfig objectForKey:MPOAuthAccessTokenURLKey]];		
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_requestTokenReceived:) name:MPOAuthNotificationRequestTokenReceived object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_requestTokenRejected:) name:MPOAuthNotificationRequestTokenRejected object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_accessTokenReceived:) name:MPOAuthNotificationAccessTokenReceived object:nil];		
+            
+        [self registerObservers];
+	
 	}
 	return self;
+}
+
+- (id) initWithAPI:(MPOAuthAPI *)inAPI  {
+    
+    self = [super init];
+    if (self) {
+        self.oauthAPI = inAPI;
+        
+        [self registerObservers];
+    }
+    return self;
+}
+
+- (void) registerObservers {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_requestTokenReceived:) name:MPOAuthNotificationRequestTokenReceived object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_requestTokenRejected:) name:MPOAuthNotificationRequestTokenRejected object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_accessTokenReceived:) name:MPOAuthNotificationAccessTokenReceived object:nil];
 }
 
 - (oneway void)dealloc {

@@ -37,3 +37,9 @@
 	
 
 @end
+
+@interface MPOAuthCredentialConcreteStore (Juguang)
+
+- (id)initWithCredentials:(NSDictionary *)inCredentials ;
+
+@end

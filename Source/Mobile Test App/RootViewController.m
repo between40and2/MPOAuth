@@ -14,6 +14,10 @@
 
 #define kConsumerKey		@"key"
 #define kConsumerSecret		@"secret"
+#define kRequestTokenURL    @"http://www.tumblr.com/oauth/request_token"
+#define kAuthorizeURL       @"http://www.tumblr.com/oauth/authorize"
+#define kAccessTokenURL     @"http://www.tumblr.com/oauth/access_token"
+
 
 @implementation RootViewController
 
@@ -39,13 +43,30 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	if (!_oauthAPI) {
-		NSDictionary *credentials = [NSDictionary dictionaryWithObjectsAndKeys:	kConsumerKey, kMPOAuthCredentialConsumerKey,
-									 kConsumerSecret, kMPOAuthCredentialConsumerSecret,
+		NSDictionary *credentials = 
+        [NSDictionary dictionaryWithObjectsAndKeys: 
+         kConsumerKey, kMPOAuthCredentialConsumerKey,
+         kConsumerSecret, kMPOAuthCredentialConsumerSecret,
 									 nil];
-		_oauthAPI = [[MPOAuthAPI alloc] initWithCredentials:credentials
-										  authenticationURL:[NSURL URLWithString:@"https://twitter.com/oauth/"]
-												 andBaseURL:[NSURL URLWithString:@"https://twitter.com/"]];
-		
+        
+        if (NO) {
+            // The old way..
+            _oauthAPI = 
+            [[MPOAuthAPI alloc] 
+             initWithCredentials:credentials
+             authenticationURL:[NSURL URLWithString:@"https://twitter.com/oauth/"]
+             andBaseURL:[NSURL URLWithString:@"https://twitter.com/"]];
+        }else {
+            
+            // This version of oauthAPI init will avoid autoconfig mechanism that original version forces us to use
+            _oauthAPI = 
+            [[MPOAuthAPI alloc] 
+             initOAuthWithCredentials: credentials
+             requestTokenURL: [NSURL URLWithString: kRequestTokenURL ]
+             authenticateURL: [NSURL URLWithString: kAuthorizeURL]
+             accessTokenURL:[NSURL URLWithString: kAccessTokenURL ] autoStart: YES];
+        }
+
 		if ([[_oauthAPI authenticationMethod] respondsToSelector:@selector(setDelegate:)]) {
 			[(MPOAuthAuthenticationMethodOAuth *)[_oauthAPI authenticationMethod] setDelegate:(id <MPOAuthAuthenticationMethodOAuthDelegate>)[UIApplication sharedApplication].delegate];
 		}

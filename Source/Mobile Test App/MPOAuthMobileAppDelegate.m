@@ -58,6 +58,7 @@
 	if ([[url host] isEqualToString:@"success"] && [url query].length > 0) {
 		NSDictionary *oauthParameters = [MPURLRequestParameter parameterDictionaryFromString:[url query]];
 		oauthVerifier_ = [oauthParameters objectForKey:@"oauth_verifier"];
+        [oauthVerifier_ retain]; // Juguang!
 	}
 	 
 	return YES;

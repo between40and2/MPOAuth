@@ -80,6 +80,9 @@ NSString * const MPOAuthAccessTokenURLKey					= @"MPOAuthAccessTokenURL";
 			
 			if (requestedMethod) {
 				*outConfig = [oauthConfig objectForKey:requestedMethod];
+                if (*outConfig == nil) { // Juguang
+                    *outConfig = oauthConfig;
+                }
 			} else {
 				*outConfig = oauthConfig;
 			}

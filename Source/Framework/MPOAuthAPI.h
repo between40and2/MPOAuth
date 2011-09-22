@@ -63,21 +63,37 @@ typedef enum {
 
 @property (nonatomic, readonly, assign) MPOAuthAuthenticationState authenticationState;
 
+/*
+ originally, the designated init is :
+
+ - (id)initWithCredentials:(NSDictionary *)inCredentials withConfiguration:(NSDictionary *)inConfiguration autoStart:(BOOL)aFlag;
+ 
+ others are shortcuts.
+ 
+ This original init is fixed with autoConfig , which gets the perferred method name in plist.
+ Now, new designated init add one parameter to let it decided by the this class's user.
+ 
+ - (id)initWithCredentials:(NSDictionary *)inCredentials withConfiguration:(NSDictionary *)inConfiguration 
+ 
+    autoStart:(BOOL)aFlag;
+*/
 
 - (id)initWithCredentials:(NSDictionary *)inCredentials andBaseURL:(NSURL *)inURL;
 - (id)initWithCredentials:(NSDictionary *)inCredentials authenticationURL:(NSURL *)inAuthURL andBaseURL:(NSURL *)inBaseURL;
+
 - (id)initWithCredentials:(NSDictionary *)inCredentials authenticationURL:(NSURL *)inAuthURL andBaseURL:(NSURL *)inBaseURL autoStart:(BOOL)aFlag;
 - (id)initWithCredentials:(NSDictionary *)inCredentials withConfiguration:(NSDictionary *)inConfiguration autoStart:(BOOL)aFlag;
 
+// Juguang
+- (id) initOAuthWithCredentials:(NSDictionary *)inCredentials 
+                requestTokenURL:(NSURL*) reqTokenURL
+              authenticateURL:(NSURL *)authURL 
+                     accessTokenURL:(NSURL *)accTokenURL autoStart:(BOOL)aFlag;
+
+
+
 - (void)authenticate;
 - (BOOL)isAuthenticated;
-
-- (void)performMethod:(NSString *)inMethod withTarget:(id)inTarget andAction:(SEL)inAction;
-- (void)performMethod:(NSString *)inMethod withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
-- (void)performMethod:(NSString *)inMethod atURL:(NSURL *)inURL withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
-- (void)performPOSTMethod:(NSString *)inMethod withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
-- (void)performPOSTMethod:(NSString *)inMethod atURL:(NSURL *)inURL withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
-- (void)performURLRequest:(NSURLRequest *)inRequest withTarget:(id)inTarget andAction:(SEL)inAction;
 
 - (NSData *)dataForMethod:(NSString *)inMethod;
 - (NSData *)dataForMethod:(NSString *)inMethod withParameters:(NSArray *)inParameters;
@@ -90,3 +106,27 @@ typedef enum {
 - (void)discardCredentials;
 
 @end
+
+@interface MPOAuthAPI (Juguang)
+
+// Juguang
+- (id) initOAuthWithCredentials:(NSDictionary *)inCredentials 
+                requestTokenURL:(NSURL*) reqTokenURL
+                authenticateURL:(NSURL *)authURL 
+                 accessTokenURL:(NSURL *)accTokenURL autoStart:(BOOL)aFlag;
+
+@end
+
+@interface MPOAuthAPI (Worker)
+
+
+- (void)performMethod:(NSString *)inMethod withTarget:(id)inTarget andAction:(SEL)inAction;
+- (void)performMethod:(NSString *)inMethod withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
+- (void)performMethod:(NSString *)inMethod atURL:(NSURL *)inURL withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
+- (void)performPOSTMethod:(NSString *)inMethod withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
+- (void)performPOSTMethod:(NSString *)inMethod atURL:(NSURL *)inURL withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction;
+- (void)performURLRequest:(NSURLRequest *)inRequest withTarget:(id)inTarget andAction:(SEL)inAction;
+
+
+@end
+

@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "MPOAuthAPI.h"
+//#import "MPOAuth.h"
+#import "MPOAuthAuthenticationMethodOAuth.h"
 
-@interface MPOAuthMobileAppDelegate : NSObject <UIApplicationDelegate> {
+@interface MPOAuthMobileAppDelegate : NSObject <UIApplicationDelegate
+,MPOAuthAuthenticationMethodOAuthDelegate
+> {
     UIWindow				*window_;
     UINavigationController	*navigationController_;
 	NSString				*oauthVerifier_;

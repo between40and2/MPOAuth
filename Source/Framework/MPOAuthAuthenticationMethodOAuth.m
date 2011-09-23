@@ -79,10 +79,7 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 - (oneway void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	self.oauthRequestTokenURL = nil;
-	self.oauthAuthorizeTokenURL = nil;
 
-	[super dealloc];
 }
 
 @synthesize delegate = delegate_;
@@ -117,10 +114,10 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 		MPURLRequestParameter *callbackParameter = nil;
 		if (self.delegate && [self.delegate respondsToSelector: @selector(callbackURLForCompletedUserAuthorization)]) {
 			NSURL *callbackURL = [self.delegate callbackURLForCompletedUserAuthorization];
-			callbackParameter = [[[MPURLRequestParameter alloc] initWithName:@"oauth_callback" andValue:[callbackURL absoluteString]] autorelease];
+			callbackParameter = [[MPURLRequestParameter alloc] initWithName:@"oauth_callback" andValue:[callbackURL absoluteString]];
 		} else {
 			// oob = "Out of bounds"
-			callbackParameter = [[[MPURLRequestParameter alloc] initWithName:@"oauth_callback" andValue:@"oob"] autorelease];
+			callbackParameter = [[MPURLRequestParameter alloc] initWithName:@"oauth_callback" andValue:@"oob"];
 		}
 		
 		NSArray *params = [NSArray arrayWithObject:callbackParameter];
@@ -138,9 +135,11 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 		callbackURL = [self.delegate respondsToSelector:@selector(callbackURLForCompletedUserAuthorization)] ? [self.delegate callbackURLForCompletedUserAuthorization] : nil;
 	}
 	
-	NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:	[oauthResponseParameters objectForKey:	@"oauth_token"], @"oauth_token",
-																													callbackURL, @"oauth_callback",
-																													nil];
+	NSDictionary *parameters = 
+    [NSDictionary dictionaryWithObjectsAndKeys:	
+     [oauthResponseParameters objectForKey:	@"oauth_token"], @"oauth_token",
+     callbackURL, @"oauth_callback",
+    nil];
 																						
 	userAuthURL = [userAuthURL urlByAddingParameterDictionary:parameters];
 	BOOL delegateWantsToBeInvolved = [self.delegate respondsToSelector:@selector(automaticallyRequestAuthenticationFromURL:withCallbackURL:)];
@@ -173,7 +172,7 @@ NSString * const MPOAuthCredentialVerifierKey				= @"oauth_verifier";
 
 		NSString *verifier = [self.delegate oauthVerifierForCompletedUserAuthorization];
 		if (verifier) {
-			verifierParameter = [[[MPURLRequestParameter alloc] initWithName:@"oauth_verifier" andValue:verifier] autorelease];
+			verifierParameter = [[MPURLRequestParameter alloc] initWithName:@"oauth_verifier" andValue:verifier];
 			params = [NSArray arrayWithObject:verifierParameter];
 		}
 	}

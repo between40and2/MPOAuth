@@ -25,14 +25,14 @@ NSString * const MPOAuthNotificationOAuthCredentialsReady	= @"MPOAuthNotificatio
 NSString * const MPOAuthNotificationErrorHasOccurred		= @"MPOAuthNotificationErrorHasOccurred";
 
 @interface MPOAuthURLResponse ()
-@property (nonatomic, readwrite, retain) NSURLResponse *urlResponse;
-@property (nonatomic, readwrite, retain) NSDictionary *oauthParameters;
+@property (nonatomic, readwrite, strong) NSURLResponse *urlResponse;
+@property (nonatomic, readwrite, strong) NSDictionary *oauthParameters;
 @end
 
 
 @interface MPOAuthAPIRequestLoader ()
-@property (nonatomic, readwrite, retain) NSData *data;
-@property (nonatomic, readwrite, retain) NSString *responseString;
+@property (nonatomic, readwrite, strong) NSData *data;
+@property (nonatomic, readwrite, strong) NSString *responseString;
 
 - (void)_interrogateResponseForOAuthData;
 @end
@@ -42,7 +42,7 @@ NSString * const MPOAuthNotificationErrorHasOccurred		= @"MPOAuthNotificationErr
 @implementation MPOAuthAPIRequestLoader
 
 - (id)initWithURL:(NSURL *)inURL {
-	return [self initWithRequest:[[[MPOAuthURLRequest alloc] initWithURL:inURL andParameters:nil] autorelease]];
+	return [self initWithRequest:[[MPOAuthURLRequest alloc] initWithURL:inURL andParameters:nil]];
 }
 
 - (id)initWithRequest:(MPOAuthURLRequest *)inRequest {
@@ -53,15 +53,6 @@ NSString * const MPOAuthNotificationErrorHasOccurred		= @"MPOAuthNotificationErr
 	return self;
 }
 
-- (oneway void)dealloc {
-	self.credentials = nil;
-	self.oauthRequest = nil;
-	self.oauthResponse = nil;
-	self.data = nil;
-	self.responseString = nil;
-
-	[super dealloc];
-}
 
 @synthesize credentials = _credentials;
 @synthesize oauthRequest = _oauthRequest;

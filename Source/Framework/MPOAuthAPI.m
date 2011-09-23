@@ -34,10 +34,10 @@ NSString * const MPOAuthBaseURLKey					= @"MPOAuthBaseURL";
 NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
 
 @interface MPOAuthAPI ()
-@property (nonatomic, readwrite, retain) id <MPOAuthCredentialStore, MPOAuthParameterFactory> credentials;
-@property (nonatomic, readwrite, retain) NSURL *authenticationURL;
-@property (nonatomic, readwrite, retain) NSURL *baseURL;
-@property (nonatomic, readwrite, retain) NSMutableArray *activeLoaders;
+@property (nonatomic, readwrite, strong) id <MPOAuthCredentialStore, MPOAuthParameterFactory> credentials;
+@property (nonatomic, readwrite, strong) NSURL *authenticationURL;
+@property (nonatomic, readwrite, strong) NSURL *baseURL;
+@property (nonatomic, readwrite, strong) NSMutableArray *activeLoaders;
 @property (nonatomic, readwrite, assign) MPOAuthAuthenticationState authenticationState;
 
 - (void)performMethod:(NSString *)inMethod atURL:(NSURL *)inURL withParameters:(NSArray *)inParameters withTarget:(id)inTarget andAction:(SEL)inAction usingHTTPMethod:(NSString *)inHTTPMethod;
@@ -59,7 +59,7 @@ NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
 		self.baseURL = inBaseURL;
 //		self.authenticationState = MPOAuthAuthenticationStateUnauthenticated;
 		credentials_ = [[MPOAuthCredentialConcreteStore alloc] initWithCredentials:inCredentials forBaseURL:inBaseURL withAuthenticationURL:inAuthURL];
-		self.authenticationMethod = [[[MPOAuthAuthenticationMethod alloc] initWithAPI:self forURL:inAuthURL] autorelease];
+		self.authenticationMethod = [[MPOAuthAuthenticationMethod alloc] initWithAPI:self forURL:inAuthURL] ;
         /*
 		self.signatureScheme = MPOAuthSignatureSchemeHMACSHA1;
 
@@ -119,15 +119,6 @@ NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
     return self;
 }
 
-- (oneway void)dealloc {
-	self.credentials = nil;
-	self.baseURL = nil;
-	self.authenticationURL = nil;
-	self.authenticationMethod = nil;
-	self.activeLoaders = nil;
-	
-	[super dealloc];
-}
 
 @synthesize credentials = credentials_;
 @synthesize baseURL = baseURL_;
@@ -187,8 +178,7 @@ NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
 	loader.credentials = self.credentials;
 	[loader loadSynchronously:YES];
 	
-	[loader autorelease];
-	[aRequest release];
+//	[loader autorelease];
 	
 	return loader.data;
 }
@@ -262,8 +252,6 @@ NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
 	[loader loadSynchronously:NO];
 	//	[self.activeLoaders addObject:loader];
 	
-	[loader release];
-	[aRequest release];
 }
 
 - (void)performURLRequest:(NSURLRequest *)inRequest withTarget:(id)inTarget andAction:(SEL)inAction {
@@ -281,8 +269,6 @@ NSString * const MPOAuthAuthenticationURLKey		= @"MPOAuthAuthenticationURL";
 	[loader loadSynchronously:NO];
 	//	[self.activeLoaders addObject:loader];
 	
-	[loader release];
-	[aRequest release];	
 }
 
 

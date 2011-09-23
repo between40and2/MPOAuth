@@ -16,7 +16,7 @@
 }
 
 - (void)tearDown {
-	[store_ release];
+
 	store_ = nil;
 }
 

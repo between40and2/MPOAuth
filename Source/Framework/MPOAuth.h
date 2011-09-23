@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+/*
 #import <MPOAuth/MPOAuthAPI.h>
 #import <MPOAuth/MPOAuthAPIRequestLoader.h>
 #import <MPOAuth/MPOAuthAuthenticationMethod.h>
@@ -18,3 +18,4 @@
 #import <MPOAuth/MPOAuthConnection.h>
 #import <MPOAuth/MPOAuthURLRequest.h>
 #import <MPOAuth/MPOAuthURLResponse.h>
+*/

@@ -21,10 +21,6 @@
 
 @implementation RootViewController
 
-- (void)dealloc {
-    [super dealloc];
-}
-
 @synthesize methodInput;
 @synthesize parametersInput;
 

@@ -73,6 +73,7 @@
      (id)kCFBooleanTrue, (__bridge id)kSecReturnPersistentRef,
 											 nil];
 
+    // Juguang. Make it ARC..
     CFTypeRef result = nil;
 	status = 
     SecItemCopyMatching(
@@ -80,7 +81,8 @@
                         &result);
                         // (__bridge CFDictionaryRef *)&attributesDictionary);
     
-//    attributesDictionary = (__bridge CFDictionaryRef) result;
+    CFDictionaryRef dict = result;
+    attributesDictionary = (__bridge NSDictionary*) dict;
     
     
     
